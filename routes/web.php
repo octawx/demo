@@ -11,6 +11,21 @@
 |
 */
 
+$router->post('users/login', ['uses' => 'UsersController@getToken']);
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/key', function () {
+    return str_random(32);
+});
+
+$router->group(['middleware' => ['auth']], function () use ($router) {
+    $router->post('/create', ['uses' => 'UsersController@create']);
+    $router->get('/list', ['uses' => 'UsersController@list']);
+});
+
+
+
+
